@@ -2,119 +2,35 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>P2P Chat Lite</title>
-  <style>
-    body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; }
-    #messages { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: auto; margin-bottom: 10px; }
-    .msg { margin: 4px 0; }
-    .me { color: #007bff; text-align: right; }
-    .other { color: #333; }
-    input, button { padding: 8px; font-size: 14px; }
-    button { cursor: pointer; }
-  </style>
+  <title>P2P Чат: Ник вместо ID</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h2>P2P Чат (Lite)</h2>
+  <h2>P2P Чат</h2>
 
-  <!-- Экран выбора: либо вводим ID, либо показываем свой -->
-  <div id="landing">
-    <p>Ваш ID: <strong id="my-id"></strong></p>
-    <button id="copy-id">Скопировать ID</button>
+  <!-- Лобби -->
+  <div id="lobby">
+    <p>Статус: <span id="lobby-status">Инициализация…</span></p>
+
+    <label><b>Придумайте ник:</b></label><br>
+    <input id="user-nick" placeholder="Например: Макс" style="width:100%;box-sizing:border-box;margin-bottom:10px;" />
+
+    <button id="copy-invite-link">Скопировать ссылку для приглашения</button>
     <hr />
-    <p>Введите ID собеседника:</p>
-    <input id="partner-id" placeholder="Peer ID" />
-    <button id="connect-btn">Подключиться</button>
+    <p>Чтобы начать чат, отправьте ссылку другу. Он сразу подключится к вам.</p>
   </div>
 
-  <!-- Экран чата -->
+  <!-- Чат -->
   <div id="chat-view" style="display:none;">
     <div id="messages"></div>
-    <div>
+    <div class="input-area">
       <input id="text-input" type="text" placeholder="Сообщение" />
       <button id="send-btn">➤</button>
+      <label class="file-label">📷 <input type="file" id="image-input" accept="image/*" /></label>
     </div>
   </div>
 
-  <!-- Подключаем PeerJS через CDN -->
   <script src="https://unpkg.com/peerjs@1/dist/peerjs.min.js"></script>
-  <script>
-    // --- Инициализация PeerJS ---
-    const peer = new Peer();
-
-    // Показываем и копируем свой ID
-    peer.on('open', (id) => {
-      document.getElementById('my-id').textContent = id;
-    });
-
-    const copyBtn = document.getElementById('copy-id');
-    copyBtn.onclick = () => {
-      const id = document.getElementById('my-id').textContent;
-      navigator.clipboard.writeText(id).then(() => alert('ID скопирован!'));
-    };
-
-    // --- Логика подключения ---
-    const partnerIdInput = document.getElementById('partner-id');
-    const connectBtn = document.getElementById('connect-btn');
-
-    let conn = null; // соединение
-    let dc = null;   // data channel
-
-    connectBtn.onclick = () => {
-      const partnerId = partnerIdInput.value.trim();
-      if (!partnerId) return;
-
-      conn = peer.connect(partnerId);
-      setupConn(conn);
-    };
-
-    // Принимаем входящие подключения
-    peer.on('connection', (c) => {
-      conn = c;
-      setupConn(c);
-    });
-
-    function setupConn(c) {
-      c.on('open', () => {
-        // Открываем DataChannel
-        dc = c.dc || c.createDataChannel('chat');
-        dc.onmessage = (event) => handleMessage(event.data);
-        dc.onopen = () => console.log('Data channel open');
-
-        // Переключаем интерфейс
-        document.getElementById('landing').style.display = 'none';
-        document.getElementById('chat-view').style.display = 'block';
-      });
-    }
-
-    // --- Отправка и отображение сообщений ---
-    function handleMessage(data) {
-      appendMessage(data, 'other');
-    }
-
-    function appendMessage(text, sender) {
-      const messages = document.getElementById('messages');
-      const div = document.createElement('div');
-      div.className = `msg ${sender}`;
-      div.textContent = text;
-      messages.appendChild(div);
-      messages.scrollTop = messages.scrollHeight;
-    }
-
-    const sendBtn = document.getElementById('send-btn');
-    const textInput = document.getElementById('text-input');
-
-    sendBtn.onclick = sendMessage;
-    textInput.onkeydown = (e) => {
-      if (e.key === 'Enter') sendMessage();
-    };
-
-    function sendMessage() {
-      const text = textInput.value.trim();
-      if (!text || !dc || dc.readyState !== 'open') return;
-      dc.send(text);
-      appendMessage(text, 'me');
-      textInput.value = '';
-    }
-  </script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>
