@@ -1,12 +1,73 @@
-body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; }
-#messages { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: auto; margin-bottom: 10px; }
-.msg { margin: 4px 0; word-wrap: break-word; }
-.me { color: #007bff; text-align: right; }
-.other { color: #333; }
-input, button { padding: 8px; font-size: 14px; }
-button { cursor: pointer; }
-.input-area { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-img { max-width: 100%; border-radius: 4px; margin-top: 4px; }
+.message {
+  margin: 8px 0;
+  padding: 8px;
+  border-radius: 8px;
+  background: #f9f9f9;
+  max-width: 85%;
+}
 
-/* Чтобы красиво показывать ники в сообщениях */
-.msg-header { font-weight:bold; font-size:0.9em; margin-bottom:2px; color:#555; }
+.message.me {
+  background: #e3f2fd;
+  text-align: right;
+  align-self: flex-end;
+}
+
+.message.other {
+  background: #ffffff;
+  text-align: left;
+  align-self: flex-start;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.message.system {
+  background: #fff3cd;
+  color: #856404;
+  font-size: 0.9em;
+  text-align: center;
+  margin: 12px 0;
+  max-width: none;
+}
+
+.message-header {
+  font-weight: bold;
+  font-size: 0.85em;
+  margin-bottom: 4px;
+  color: #555;
+}
+
+.message-body {
+  word-wrap: break-word;
+}
+
+.message-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin-top: 4px;
+}
+
+.message-file {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.file-icon {
+  font-size: 1.2em;
+}
+
+.file-name {
+  flex: 1;
+  min-width: 150px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.file-download {
+  color: #2196f3;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.9em;
+}
