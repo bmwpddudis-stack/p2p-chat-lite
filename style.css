@@ -1,0 +1,12 @@
+body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; }
+#messages { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: auto; margin-bottom: 10px; }
+.msg { margin: 4px 0; word-wrap: break-word; }
+.me { color: #007bff; text-align: right; }
+.other { color: #333; }
+input, button { padding: 8px; font-size: 14px; }
+button { cursor: pointer; }
+.input-area { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+img { max-width: 100%; border-radius: 4px; margin-top: 4px; }
+
+/* Чтобы красиво показывать ники в сообщениях */
+.msg-header { font-weight:bold; font-size:0.9em; margin-bottom:2px; color:#555; }
